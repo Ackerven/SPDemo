@@ -1,7 +1,6 @@
 package erha.fun.demo.bean;
 
 import erha.fun.demo.utils.Tools;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +18,16 @@ public class Classes {
     private String name;
     private String cid;
     private List<Student> students;
-    private Teacher teacher;
+    private List<Teacher> teachers;
 
     public Classes() {
     }
 
-    public Classes(String grade, String name, Teacher teacher) {
+    public Classes(String grade, String name) {
         this.grade = grade;
         this.name = name;
         this.students = new ArrayList<>();
-        this.teacher = teacher;
+        this.teachers = new ArrayList<>();
         this.setCid();
     }
 
@@ -64,12 +63,12 @@ public class Classes {
         this.students = students;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public List<Teacher> getTeachers() {
+        return teachers;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     private void setCid() {
@@ -78,13 +77,6 @@ public class Classes {
 
     @Override
     public String toString() {
-        return "Classes{" +
-                "id=" + id +
-                ", grade='" + grade + '\'' +
-                ", name='" + name + '\'' +
-                ", cid='" + cid + '\'' +
-                ", students=" + students +
-                ", teacher=" + teacher +
-                '}';
+        return "Classes{" + "id=" + id + ", grade='" + grade + '\'' + ", name='" + name + '\'' + ", cid='" + cid + '\'' + ", students=" + students + ", teachers=" + teachers + '}';
     }
 }

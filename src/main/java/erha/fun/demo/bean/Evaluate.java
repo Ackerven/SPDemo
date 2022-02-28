@@ -1,7 +1,9 @@
 package erha.fun.demo.bean;
 
 import erha.fun.demo.utils.Tools;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Ackerven
@@ -17,17 +19,17 @@ public class Evaluate {
     private String content;
     private Integer score;
     private String eid;
-    private String uid;
+    private String sid;
     private String tid;
 
     public Evaluate() {
     }
 
-    public Evaluate(String content, Integer score, String uid, String tid) {
+    public Evaluate(String content, Integer score, String sid, String tid) {
         this.content = content;
         this.score = score;
         setEid();
-        this.uid = uid;
+        this.sid = sid;
         this.tid = tid;
     }
 
