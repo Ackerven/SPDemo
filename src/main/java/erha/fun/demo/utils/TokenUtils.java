@@ -26,10 +26,9 @@ public class TokenUtils {
     /**
      * 生成 Token
      * @param userName 用户名
-     * @param role 角色
      * @return token
      */
-    public static String sign(String userName, String role) {
+    public static String sign(String userName) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         Map<String, Object> herders = new HashMap<>(2);
@@ -38,7 +37,6 @@ public class TokenUtils {
         return JWT.create()
                 .withHeader(herders)
                 .withClaim("userName", userName)
-                .withClaim("role", role)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
