@@ -1,7 +1,10 @@
 package erha.fun.demo.utils;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 /**
@@ -46,5 +49,14 @@ public class Tools {
             stringBuilder.append(str.charAt(index));
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * MD5 加密
+     * @param str 需要加密的字符串
+     * @return 加密后的数据
+     */
+    public static String encryptToMD5(String str) {
+        return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
     }
 }
