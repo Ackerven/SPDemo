@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://bt.erha.fun:3306/demo
+    username: demo
+    password: demo
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    url: redis://localhost:6379
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
