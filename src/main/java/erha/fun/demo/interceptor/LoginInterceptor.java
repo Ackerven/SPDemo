@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import erha.fun.demo.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
@@ -20,7 +21,16 @@ import java.util.Map;
  * @date 3/1/22 12:40 PM
  */
 @Slf4j
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
+    private String verifyType;
+
+    public LoginInterceptor() { }
+
+    public LoginInterceptor(String verifyType) {
+        this.verifyType = verifyType;
+    }
+
     /**
      * 目标方法执行之前
      * @param request
@@ -29,13 +39,6 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @return
      * @throws Exception
      */
-
-    private String verifyType;
-
-    public LoginInterceptor(String verifyType) {
-        this.verifyType = verifyType;
-    }
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("Intercept URL: {}", request.getRequestURI());
