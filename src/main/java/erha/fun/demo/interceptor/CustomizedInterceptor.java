@@ -1,5 +1,7 @@
 package erha.fun.demo.interceptor;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,6 +16,8 @@ import java.io.IOException;
  * @date 3/1/22 7:48 PM
  */
 @Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class CustomizedInterceptor implements HandlerInterceptor {
     protected String verifyType;
 
