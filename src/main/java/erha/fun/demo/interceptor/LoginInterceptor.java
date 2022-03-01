@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -69,8 +70,19 @@ public class LoginInterceptor implements HandlerInterceptor {
                     continue;
                 }
             }
+
             if(token != null && username != null) {
-                legalUser= TokenUtils.verify(token);
+                DecodedJWT verify = null;
+                try {
+                    verify = TokenUtils.verifier.verify(token);
+                } catch (Exception ex) {
+                    map.put("code", 404);
+                    map.put("msg", "Token错误");
+                    response.getWriter().println(new JSONObject(map));
+                    response.getWriter().close();
+                    return false;
+                }
+                legalUser = username.equals(verify.getClaim("userName").asString());
                 if(!legalUser) {
                     map.put("code", 404);
                     map.put("msg", "Cookies错误");
@@ -90,9 +102,32 @@ public class LoginInterceptor implements HandlerInterceptor {
     private boolean verifyByHeader(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
-        String token = request.getHeader("Token");
+        String token = null;
+        String username = null;
+        try {
+            token = request.getHeader("Token");
+            username = request.getHeader("Username").toLowerCase(Locale.ROOT);
+        } catch (Exception ex) {
+            map.put("code", 404);
+            map.put("msg", "Header参数错误");
+            response.getWriter().println(new JSONObject(map));
+            response.getWriter().close();
+            return false;
+        }
+
+
         if(token != null) {
-            legalUser = TokenUtils.verify(token);
+            DecodedJWT verify = null;
+            try {
+                verify = TokenUtils.verifier.verify(token);
+            } catch (Exception ex) {
+                map.put("code", 404);
+                map.put("msg", "Token错误");
+                response.getWriter().println(new JSONObject(map));
+                response.getWriter().close();
+                return false;
+            }
+            legalUser = username.equals(verify.getClaim("userName").asString());
             if(!legalUser) {
                 map.put("code", 404);
                 map.put("msg", "非法用户");
