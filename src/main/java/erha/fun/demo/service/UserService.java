@@ -43,4 +43,12 @@ public class UserService {
     public Integer getRoleByUserName(String username) {
         return userMapper.getRoleByUserName(username);
     }
+
+    /**
+     * 记录登陆记录
+     * @param uid
+     */
+    public void addLoginRecord(String uid) {
+        userMapper.loginRecord(uid);
+    }
 }

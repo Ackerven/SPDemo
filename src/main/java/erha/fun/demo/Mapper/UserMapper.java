@@ -2,6 +2,7 @@ package erha.fun.demo.Mapper;
 
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -21,4 +22,7 @@ public interface UserMapper {
 
     @Select("select role from Student where username = #{username}")
     Integer getRoleByUserName(String username);
+
+    @Insert("insert into login_record(uid) values(#{uid})")
+    void loginRecord(String uid);
 }

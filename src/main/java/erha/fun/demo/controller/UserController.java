@@ -1,5 +1,7 @@
 package erha.fun.demo.controller;
 
+import erha.fun.demo.bean.Student;
+import erha.fun.demo.bean.Teacher;
 import erha.fun.demo.bean.User;
 import erha.fun.demo.service.UserService;
 import erha.fun.demo.utils.TokenUtils;
@@ -28,7 +30,7 @@ public class UserController {
 
     /**
      * 登陆接口
-     * @param map
+     * @param map UserName Password
      * @param response
      * @return
      */
@@ -60,6 +62,13 @@ public class UserController {
             result.put("code", 200);
             result.put("msg", "success");
             result.put("token", token);
+            if (user.getRole().equals(User.ADMIN)) {
+                User u;
+            } else if (user.getRole().equals(User.STUDENT)) {
+                userService.addLoginRecord(((Student) user).getSid());
+            } else if (user.getRole().equals(User.TEACHER)) {
+                userService.addLoginRecord(((Teacher) user).getTid());
+            }
         } else {
             result.put("code", 403);
             result.put("msg", "用户名和密码错误");
