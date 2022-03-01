@@ -20,9 +20,6 @@ public interface UserMapper {
     @Select("select * from teacher where username = #{username}")
     Teacher queryTeacherByUserName(String username);
 
-    @Select("select role from Student where username = #{username}")
-    Integer getRoleByUserName(String username);
-
     @Insert("insert into login_record(uid) values(#{uid})")
     void loginRecord(String uid);
 

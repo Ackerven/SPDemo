@@ -31,7 +31,7 @@ public class UserController {
 
     /**
      * 登陆接口
-     * @param map UserName Password
+     * @param map UserName Password role
      * @param response
      * @return
      */
@@ -39,7 +39,7 @@ public class UserController {
     public Map<String, Object> login(@RequestBody Map<String, String> map, HttpServletResponse response) {
         Map<String, Object> result = new HashMap<>();
         User user = null;
-        Integer role = userService.getRoleByUserName(map.get("username"));
+        Integer role = Integer.parseInt(map.get("role"));
         if (role.equals(User.ADMIN)) {
             user = new User();
         } else if (role.equals(User.STUDENT)) {

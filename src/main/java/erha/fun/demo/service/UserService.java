@@ -36,15 +36,6 @@ public class UserService {
     }
 
     /**
-     * 通过用户名查询用户角色
-     * @param username
-     * @return
-     */
-    public Integer getRoleByUserName(String username) {
-        return userMapper.getRoleByUserName(username);
-    }
-
-    /**
      * 记录登陆记录
      * @param uid
      */
