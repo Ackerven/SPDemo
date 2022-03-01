@@ -2,6 +2,7 @@ package erha.fun.demo.config;
 
 import erha.fun.demo.bean.User;
 import erha.fun.demo.interceptor.APIInterceptor;
+import erha.fun.demo.interceptor.CustomizedInterceptor;
 import erha.fun.demo.interceptor.LoginInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +19,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor("Cookie"))
+        registry.addInterceptor(new LoginInterceptor(CustomizedInterceptor.Cookie))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login", "/signup");
 
-        registry.addInterceptor(new APIInterceptor("Cookie", User.STUDENT))
+        registry.addInterceptor(new APIInterceptor(CustomizedInterceptor.Cookie, User.STUDENT))
                 .addPathPatterns("/student/**")
                 .excludePathPatterns("/login", "/signup");
 
-        registry.addInterceptor(new APIInterceptor("Cookie", User.TEACHER))
+        registry.addInterceptor(new APIInterceptor(CustomizedInterceptor.Cookie, User.TEACHER))
                 .addPathPatterns("/teacher/**")
                 .excludePathPatterns("/login", "/signup");
     }

@@ -2,17 +2,13 @@ package erha.fun.demo.interceptor;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import erha.fun.demo.utils.TokenUtils;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Ackerven
@@ -26,14 +22,13 @@ public class APIInterceptor extends CustomizedInterceptor {
 
     private Integer APIType;
 
-    public APIInterceptor(String verifyType, Integer APIType) {
+    public APIInterceptor(Integer verifyType, Integer APIType) {
         super(verifyType);
         this.APIType = APIType;
     }
 
     @Override
     protected boolean verifyByCookie(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         Cookie[] cookies = request.getCookies();
         String token = null;
@@ -46,78 +41,51 @@ public class APIInterceptor extends CustomizedInterceptor {
             }
 
             if (token != null) {
-                DecodedJWT verify = null;
-                try {
-                    verify = TokenUtils.verifier.verify(token);
-                } catch (Exception ex) {
-                    map.put("code", 404);
-                    map.put("msg", "Token错误");
-                    response.getWriter().println(new JSONObject(map));
-                    response.getWriter().close();
-                    return false;
-                }
-
-                Integer role = verify.getClaim("role").asInt();
-                legalUser = role.equals(this.APIType);
+                legalUser = this.checkRole(response, token);
 
                 if (!legalUser) {
-                    map.put("code", 403);
-                    map.put("msg", "非法用户");
-                    response.getWriter().println(new JSONObject(map));
-                    response.getWriter().close();
+                    this.writeError(response, 403, "非法用户");
                 }
             }
         } else {
-            map.put("code", 404);
-            map.put("msg", "Cookies不存在");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Cookies不存在");
         }
         return legalUser;
     }
 
     @Override
     protected boolean verifyByHeader(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         String token = null;
         try {
             token = request.getHeader("Token");
         } catch (Exception ex) {
-            map.put("code", 404);
-            map.put("msg", "Header参数错误");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Header参数错误");
             return false;
         }
 
         if (token != null) {
-            DecodedJWT verify = null;
-            try {
-                verify = TokenUtils.verifier.verify(token);
-            } catch (Exception ex) {
-                map.put("code", 404);
-                map.put("msg", "Token错误");
-                response.getWriter().println(new JSONObject(map));
-                response.getWriter().close();
-                return false;
-            }
-
-            Integer role = Integer.parseInt(verify.getClaim("role").asString());
-            legalUser = role.equals(this.APIType);
+            legalUser = this.checkRole(response, token);
 
             if (!legalUser) {
-                map.put("code", 404);
-                map.put("msg", "非法用户");
-                response.getWriter().println(new JSONObject(map));
-                response.getWriter().close();
+                this.writeError(response, 403, "非法用户");
             }
         } else {
-            map.put("code", 404);
-            map.put("msg", "Token错误");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Token错误");
         }
         return legalUser;
+    }
+
+    private boolean checkRole(HttpServletResponse response, String token) throws IOException {
+        DecodedJWT verify = null;
+        try {
+            verify = TokenUtils.verifier.verify(token);
+        } catch (Exception ex) {
+            this.writeError(response, 404, "Token错误");
+            return false;
+        }
+
+        Integer role = verify.getClaim("role").asInt();
+        return role.equals(this.APIType);
     }
 }

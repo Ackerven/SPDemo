@@ -5,7 +5,6 @@ import erha.fun.demo.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,60 +23,45 @@ import java.util.Map;
 @Slf4j
 @Component
 public class LoginInterceptor extends CustomizedInterceptor {
-    public LoginInterceptor() { }
+    public LoginInterceptor() {
+    }
 
-    public LoginInterceptor(String verifyType) {
+    public LoginInterceptor(Integer verifyType) {
         this.verifyType = verifyType;
     }
 
+    @Override
     protected boolean verifyByCookie(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         Cookie[] cookies = request.getCookies();
         String username = "";
         String token = "";
-        if(cookies != null) {
-            for(Cookie c: cookies) {
-                if(c.getName().equals("username")) {
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals("username")) {
                     username = c.getValue();
                     continue;
                 }
-                if(c.getName().equals("token")) {
+                if (c.getName().equals("token")) {
                     token = c.getValue();
                     continue;
                 }
             }
 
-            if(token != null && username != null) {
-                DecodedJWT verify = null;
-                try {
-                    verify = TokenUtils.verifier.verify(token);
-                } catch (Exception ex) {
-                    map.put("code", 404);
-                    map.put("msg", "Token错误");
-                    response.getWriter().println(new JSONObject(map));
-                    response.getWriter().close();
-                    return false;
-                }
-                legalUser = username.equals(verify.getClaim("userName").asString());
-                if(!legalUser) {
-                    map.put("code", 404);
-                    map.put("msg", "Cookies错误");
-                    response.getWriter().println(new JSONObject(map));
-                    response.getWriter().close();
+            if (token != null && username != null) {
+                legalUser = this.checkUser(response, token, username);
+                if (!legalUser) {
+                    this.writeError(response, 403, "非法用户");
                 }
             }
         } else {
-            map.put("code", 404);
-            map.put("msg", "Cookies不存在");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Cookies错误");
         }
         return legalUser;
     }
 
+    @Override
     protected boolean verifyByHeader(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         String token = null;
         String username = null;
@@ -85,38 +69,31 @@ public class LoginInterceptor extends CustomizedInterceptor {
             token = request.getHeader("Token");
             username = request.getHeader("Username").toLowerCase(Locale.ROOT);
         } catch (Exception ex) {
-            map.put("code", 404);
-            map.put("msg", "Header参数错误");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Header参数错误");
             return false;
         }
 
 
-        if(token != null) {
-            DecodedJWT verify = null;
-            try {
-                verify = TokenUtils.verifier.verify(token);
-            } catch (Exception ex) {
-                map.put("code", 404);
-                map.put("msg", "Token错误");
-                response.getWriter().println(new JSONObject(map));
-                response.getWriter().close();
-                return false;
-            }
-            legalUser = username.equals(verify.getClaim("userName").asString());
-            if(!legalUser) {
-                map.put("code", 404);
-                map.put("msg", "非法用户");
-                response.getWriter().println(new JSONObject(map));
-                response.getWriter().close();
+        if (token != null) {
+            legalUser = this.checkUser(response, token, username);
+            if (!legalUser) {
+                this.writeError(response, 403, "非法用户");
             }
         } else {
-            map.put("code", 404);
-            map.put("msg", "Token错误");
-            response.getWriter().println(new JSONObject(map));
-            response.getWriter().close();
+            this.writeError(response, 404, "Token错误");
         }
         return legalUser;
     }
+
+    private boolean checkUser(HttpServletResponse response, String token, String key) throws IOException {
+        DecodedJWT verify = null;
+        try {
+            verify = TokenUtils.verifier.verify(token);
+        } catch (Exception ex) {
+            this.writeError(response, 404, "Token错误");
+            return false;
+        }
+         return key.equals(verify.getClaim("userName").asString());
+    }
+
 }
