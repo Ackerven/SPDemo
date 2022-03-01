@@ -36,7 +36,7 @@ public class Teacher extends User {
         this.name = name;
     }
 
-    private String getTid() {
+    public String getTid() {
         return tid;
     }
 
