@@ -50,7 +50,7 @@ public class UserController {
 
         if (user != null && user.getPassword().equals(Tools.encryptToMD5(map.get("password")))) {
             //Success
-            String token = TokenUtils.sign(user.getUsername(), user.getRole());
+            String token = TokenUtils.sign(user.getUsername());
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(7 * 24 * 60 * 60);
             response.addCookie(cookie);
