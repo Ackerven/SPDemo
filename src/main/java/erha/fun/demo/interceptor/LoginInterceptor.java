@@ -23,37 +23,14 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
-    private String verifyType;
-
+public class LoginInterceptor extends CustomizedInterceptor {
     public LoginInterceptor() { }
 
     public LoginInterceptor(String verifyType) {
         this.verifyType = verifyType;
     }
 
-    /**
-     * 目标方法执行之前
-     * @param request
-     * @param response
-     * @param handler
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Intercept URL: {}", request.getRequestURI());
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json");
-        if(verifyType.equals("Cookie")) {
-            return this.verifyByCookie(request, response);
-        } else if (verifyType.equals("Header")) {
-            return this.verifyByHeader(request, response);
-        }
-        return false;
-    }
-
-    private boolean verifyByCookie(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected boolean verifyByCookie(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         Cookie[] cookies = request.getCookies();
@@ -99,7 +76,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         return legalUser;
     }
 
-    private boolean verifyByHeader(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected boolean verifyByHeader(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>();
         boolean legalUser = false;
         String token = null;
