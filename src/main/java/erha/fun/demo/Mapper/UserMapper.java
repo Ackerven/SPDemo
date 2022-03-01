@@ -25,4 +25,11 @@ public interface UserMapper {
 
     @Insert("insert into login_record(uid) values(#{uid})")
     void loginRecord(String uid);
+
+    @Insert("insert into student(sid, username, password, role, name) values(#{sid}, #{username}, #{password}, #{role}, #{name})")
+    void insertStudent(Student student);
+    // void insertStudent(String sid, String username, String password, Integer role, String name);
+
+    @Insert("insert into teacher(tid, username, password, role, name) values(#{tid}, #{username}, #{password}, #{role}, #{name})")
+    void insertTeacher(Teacher teacher);
 }

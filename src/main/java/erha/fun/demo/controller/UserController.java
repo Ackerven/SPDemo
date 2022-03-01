@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -73,6 +74,45 @@ public class UserController {
             result.put("code", 403);
             result.put("msg", "用户名和密码错误");
         }
+        return result;
+    }
+
+
+    /**
+     * 注册接口
+     * @param map username password role name
+     * @param response
+     * @return
+     */
+    @PostMapping("/signup")
+    public Map<String, Object> signUp(@RequestBody Map<String, String> map, HttpServletResponse response) {
+        Map<String, Object> result = new HashMap<>();
+        if(Integer.parseInt(map.get("role")) == 1) {
+            User user;
+        } else if (Integer.parseInt(map.get("role")) == 2) {
+            Student student = new Student(map.get("username").toLowerCase(Locale.ROOT), map.get("password"), map.get("name"));
+            try {
+                userService.addStudent(student);
+                result.put("code", Integer.toString(200));
+                result.put("msg", "注册成功");
+            } catch (Exception ex) {
+                result.put("code", Integer.toString(404));
+                result.put("msg", "注册失败 " + ex.getMessage());
+            }
+        } else if (Integer.parseInt(map.get("role")) == 3) {
+            Teacher teacher = new Teacher(map.get("username"), map.get("password"), map.get("name"));
+            try {
+                userService.addTeacher(teacher);
+                result.put("code", Integer.toString(200));
+                result.put("msg", "注册成功");
+            } catch (Exception ex) {
+                result.put("code", Integer.toString(404));
+                result.put("msg", "注册失败 " + ex.getMessage());
+            }
+        } else {
+            User user;
+        }
+
         return result;
     }
 }

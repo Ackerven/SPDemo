@@ -51,4 +51,30 @@ public class UserService {
     public void addLoginRecord(String uid) {
         userMapper.loginRecord(uid);
     }
+
+    /**
+     * 学生注册
+     * @param student
+     */
+    public void addStudent(Student student) {
+//        userMapper.insertStudent(student.getSid(),
+//                student.getUsername(),
+//                student.getPassword(),
+//                student.getRole(),
+//                student.getName());
+        userMapper.insertStudent(student);
+    }
+
+    /**
+     * 教师注册
+     * @param teacher
+     */
+    public void addTeacher(Teacher teacher) {
+//        userMapper.insertTeacher(teacher.getTid(),
+//                teacher.getUsername(),
+//                teacher.getPassword(),
+//                teacher.getRole(),
+//                teacher.getName());
+        userMapper.insertTeacher(teacher);
+    }
 }
