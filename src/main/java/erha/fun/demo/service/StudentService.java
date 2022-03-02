@@ -2,6 +2,7 @@ package erha.fun.demo.service;
 
 import erha.fun.demo.Mapper.StudentMapper;
 import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,25 @@ public class StudentService {
      */
     public Integer queryScoreForStudent(String sid, String cid) {
         return studentMapper.queryScoreForStudent(sid, cid);
+    }
+
+    /**
+     * 查询历史评价
+     * @param sid 学生 sid
+     * @return 历史评价列表
+     */
+    public List<Evaluate> queryHistoryEvaluate(String sid, String pageNo, String pageSize) {
+        int length = Integer.parseInt(pageSize);
+        int index = (Integer.parseInt(pageNo) - 1);
+        return studentMapper.queryEvaluate(sid, index, length);
+    }
+
+    /**
+     * 查询评价的老师
+     * @param tid 老师 tid
+     * @return Teacher
+     */
+    public Teacher queryTeacherForEvaluate(String tid) {
+        return studentMapper.queryTeacherForEvaluate(tid);
     }
 }

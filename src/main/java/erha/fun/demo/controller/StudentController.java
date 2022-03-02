@@ -2,6 +2,7 @@ package erha.fun.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import erha.fun.demo.service.StudentService;
@@ -11,9 +12,11 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,5 +69,22 @@ public class StudentController {
         map.put("score", studentService.queryScoreForStudent(student.getSid(), classes.getCid()));
         map.put("class", classes);
         return map;
+    }
+
+    @GetMapping("/student/{username}/evaluate")
+    public List<Map<String, Object>> historyEvaluate(@PathVariable("username") String username,
+                                                     @RequestParam Map<String, String> param) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        Student student = studentService.queryStudentByUserName(username);
+        List<Evaluate> list = studentService.queryHistoryEvaluate(student.getSid(),param.get("pageNo"), param.get("pageSize"));
+        for(Evaluate e: list) {
+            Map<String, Object> map = new HashMap<>();
+            Teacher t = studentService.queryTeacherForEvaluate(e.getTid());
+            t.setPassword("");
+            map.put("teacher", t);
+            map.put("evaluate", e);
+            result.add(map);
+        }
+        return result;
     }
 }

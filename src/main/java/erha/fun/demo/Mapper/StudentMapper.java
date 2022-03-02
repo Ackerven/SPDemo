@@ -1,6 +1,7 @@
 package erha.fun.demo.Mapper;
 
 import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,4 +37,10 @@ public interface StudentMapper {
 
     @Select("select SUM(score) from evaluate where sid = #{sid} and cid = #{cid}")
     Integer queryScoreForStudent(String sid, String cid);
+
+    @Select("select * from evaluate where sid = #{sid} limit #{index}, #{pageSize}")
+    List<Evaluate> queryEvaluate(String sid, int index, int pageSize);
+
+    @Select("select * from teacher where tid = #{tid}")
+    Teacher queryTeacherForEvaluate(String tid);
 }
