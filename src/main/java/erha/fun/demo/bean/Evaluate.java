@@ -21,16 +21,18 @@ public class Evaluate {
     private String eid;
     private String sid;
     private String tid;
+    private String cid;
 
     public Evaluate() {
     }
 
-    public Evaluate(String content, Integer score, String sid, String tid) {
+    public Evaluate(String content, Integer score, String sid, String tid, String cid) {
         this.content = content;
         this.score = score;
         setEid();
         this.sid = sid;
         this.tid = tid;
+        this.cid = cid;
     }
 
     public void setId(Long id) {
