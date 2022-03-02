@@ -37,7 +37,8 @@ public class StudentController {
     @GetMapping("/student/{username}")
     public Student space(@PathVariable("username") String username) {
         Student student = studentService.queryStudentByUserName(username);
-        student.setClassList(studentService.queryClassOfStudent(student.getSid()));
+        student.setClassList(this.classList(username));
+        student.setPassword("");
         return student;
     }
 
