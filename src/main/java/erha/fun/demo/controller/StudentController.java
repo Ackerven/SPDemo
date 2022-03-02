@@ -3,6 +3,7 @@ package erha.fun.demo.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import erha.fun.demo.bean.Classes;
 import erha.fun.demo.bean.Student;
+import erha.fun.demo.bean.Teacher;
 import erha.fun.demo.service.StudentService;
 import erha.fun.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,5 +39,17 @@ public class StudentController {
         Student student = studentService.queryStudentByUserName(username);
         student.setClassList(studentService.queryClassOfStudent(student.getSid()));
         return student;
+    }
+
+    @GetMapping("/student/{username}/class")
+    public List<Classes> classList(@PathVariable("username") String username) {
+        Student student = studentService.queryStudentByUserName(username);
+        List<Classes> list = studentService.queryClassOfStudent(student.getSid());
+        for(Classes c: list) {
+            Teacher t = studentService.queryTeacherForClass(c.getCid());
+            t.setPassword("");
+            c.setTeacher(t);
+        }
+        return list;
     }
 }

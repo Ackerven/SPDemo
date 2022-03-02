@@ -3,6 +3,7 @@ package erha.fun.demo.service;
 import erha.fun.demo.Mapper.StudentMapper;
 import erha.fun.demo.bean.Classes;
 import erha.fun.demo.bean.Student;
+import erha.fun.demo.bean.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,10 @@ public class StudentService {
      */
     public List<Classes> queryClassOfStudent(String sid) {
         return studentMapper.queryClassOfStudent(sid);
+    }
+
+    public Teacher queryTeacherForClass(String cid) {
+        return studentMapper.queryTeacherForClass(cid);
     }
 
 
