@@ -30,4 +30,10 @@ public interface StudentMapper {
 
     @Select("select * from teacher where tid = (select tid from tc_relation where cid = #{cid})")
     Teacher queryTeacherForClass(String cid);
+
+    @Select("select * from classes where cid = #{cid}")
+    Classes queryClass(String cid);
+
+    @Select("select SUM(score) from evaluate where sid = #{sid} and cid = #{cid}")
+    Integer queryScoreForStudent(String sid, String cid);
 }

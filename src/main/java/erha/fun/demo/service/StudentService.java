@@ -56,9 +56,31 @@ public class StudentService {
         return studentMapper.queryClassOfStudent(sid);
     }
 
+    /**
+     * 查询班级的老师
+     * @param cid 班级 id
+     * @return Teacher
+     */
     public Teacher queryTeacherForClass(String cid) {
         return studentMapper.queryTeacherForClass(cid);
     }
 
+    /**
+     * 查询班级信息
+     * @param cid 班级 cid
+     * @return Classes
+     */
+    public Classes queryClasses(String cid) {
+        return studentMapper.queryClass(cid);
+    }
 
+    /**
+     * 查询学生所在班级的积分
+     * @param sid 学生 sid
+     * @param cid 班级 cid
+     * @return 学生所在班级的积分
+     */
+    public Integer queryScoreForStudent(String sid, String cid) {
+        return studentMapper.queryScoreForStudent(sid, cid);
+    }
 }

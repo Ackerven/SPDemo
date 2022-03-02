@@ -53,4 +53,18 @@ public class StudentController {
         }
         return list;
     }
+
+    @GetMapping("/student/{username}/class/{cid}")
+    public Map<String, Object> classes(@PathVariable("username") String username,
+                           @PathVariable("cid") String cid) {
+        Map<String, Object> map = new HashMap<>();
+        Classes classes = studentService.queryClasses(cid);
+        Teacher t = studentService.queryTeacherForClass(classes.getCid());
+        t.setPassword("");
+        classes.setTeacher(t);
+        Student student = studentService.queryStudentByUserName(username);
+        map.put("score", studentService.queryScoreForStudent(student.getSid(), classes.getCid()));
+        map.put("class", classes);
+        return map;
+    }
 }
