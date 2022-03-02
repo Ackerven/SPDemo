@@ -18,7 +18,7 @@ public class Classes {
     private String name;
     private String cid;
     private List<Student> students;
-    private List<Teacher> teachers;
+    private Teacher teacher;
 
     public Classes() {
     }
@@ -27,7 +27,14 @@ public class Classes {
         this.grade = grade;
         this.name = name;
         this.students = new ArrayList<>();
-        this.teachers = new ArrayList<>();
+        this.setCid();
+    }
+
+    public Classes(String grade, String name, Teacher teacher) {
+        this.grade = grade;
+        this.name = name;
+        this.students = new ArrayList<>();
+        this.teacher = teacher;
         this.setCid();
     }
 
@@ -63,12 +70,12 @@ public class Classes {
         this.students = students;
     }
 
-    public List<Teacher> getTeachers() {
-        return teachers;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     private void setCid() {
@@ -77,6 +84,6 @@ public class Classes {
 
     @Override
     public String toString() {
-        return "Classes{" + "id=" + id + ", grade='" + grade + '\'' + ", name='" + name + '\'' + ", cid='" + cid + '\'' + ", students=" + students + ", teachers=" + teachers + '}';
+        return "Classes{" + "id=" + id + ", grade='" + grade + '\'' + ", name='" + name + '\'' + ", cid='" + cid + '\'' + ", students=" + students + ", teacher=" + teacher + '}';
     }
 }
