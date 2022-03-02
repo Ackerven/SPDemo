@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 public class TokenUtils {
-    private static final long EXPIRE_TIME = 15 * 60 * 1000;
+    private static final long EXPIRE_TIME = 24 * 60 * 60 * 1000;
     private static final String TOKEN_SECRET = "14uWiYWehIxKhhVC1HUip7Ts7fJ5pFeTp5BTKhcDDe";
     private static final Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
     public static JWTVerifier verifier = JWT.require(algorithm).build();
