@@ -88,20 +88,9 @@ public class TeacherController {
                 teacherService.addEvaluateToDB(e);
             }
         }
-        map.put("evaluate", evaluates);
+        map.put("code", 200);
+        map.put("msg", " 添加成功");
         return map;
-    }
-
-    private String trims(String str) {
-        StringBuffer s = new StringBuffer();
-        byte[] b = str.getBytes(StandardCharsets.UTF_8);
-        for(byte ch: b) {
-            if(ch == '/' || ch == '"') {
-                continue;
-            }
-            s.append(ch);
-        }
-        return s.toString();
     }
 
 }
