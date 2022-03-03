@@ -1,7 +1,9 @@
 package erha.fun.demo.service;
 
+import erha.fun.demo.Mapper.StudentMapper;
 import erha.fun.demo.Mapper.TeacherMapper;
 import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,19 @@ public class TeacherService {
 
     public List<Student> queryStudentForClass(String cid) {
         return teacherMapper.queryStudentForClass(cid);
+    }
+
+    public Classes queryClass(String cid) {
+        return teacherMapper.queryClass(cid);
+    }
+
+    public List<Evaluate> queryHistoryEvaluate(String tid, String pageNo, String pageSize) {
+        int length = Integer.parseInt(pageSize);
+        int index = (Integer.parseInt(pageNo) - 1);
+        return teacherMapper.queryEvaluate(tid, index, length);
+    }
+
+    public Student queryStudentForEvaluate(String sid) {
+        return teacherMapper.queryStudentForEvaluate(sid);
     }
 }

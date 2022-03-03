@@ -1,6 +1,7 @@
 package erha.fun.demo.Mapper;
 
 import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,13 @@ public interface TeacherMapper {
 
     @Select("select * from student where sid in (select sid from sc_relation where cid = #{cid})")
     public List<Student> queryStudentForClass(String cid);
+
+    @Select("select * from classes where cid = #{cid}")
+    Classes queryClass(String cid);
+
+    @Select("select * from evaluate where tid = #{tid} limit #{index}, #{pageSize}")
+    List<Evaluate> queryEvaluate(String tid, int index, int pageSize);
+
+    @Select("select * from student where sid = #{sid}")
+    Student queryStudentForEvaluate(String sid);
 }
