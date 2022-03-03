@@ -85,8 +85,10 @@ public class StudentController {
             Map<String, Object> map = new HashMap<>();
             Teacher t = studentService.queryTeacherForEvaluate(e.getTid());
             t.setPassword("");
+            Classes c = studentService.queryClasses(e.getCid());
             map.put("teacher", t);
             map.put("evaluate", e);
+            map.put("class", c);
             result.add(map);
         }
         return result;
