@@ -4,6 +4,7 @@ import erha.fun.demo.bean.Classes;
 import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -40,4 +41,7 @@ public interface TeacherMapper {
 
     @Select("select * from student where sid = #{sid}")
     Student queryStudentForEvaluate(String sid);
+
+    @Insert("insert into evaluate(eid, content, score, tid, sid, cid) values(#{eid}, #{content}, #{score}, #{tid}, #{sid}, #{cid})")
+    void putEvaluate(String eid, String content, Integer score, String tid, String sid, String cid);
 }

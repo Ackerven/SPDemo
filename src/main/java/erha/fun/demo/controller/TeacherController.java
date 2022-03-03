@@ -5,16 +5,13 @@ import erha.fun.demo.bean.Evaluate;
 import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import erha.fun.demo.service.TeacherService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * @author Ackerven
@@ -66,6 +63,45 @@ public class TeacherController {
             result.add(map);
         }
         return result;
+    }
+
+    @PostMapping("/teacher/{value}/evaluate")
+    public Map<String ,Object> submitEvaluate(@PathVariable("value") String value,
+                                              @RequestParam Map<String, String> params) {
+        Map<String, Object> map = new HashMap<>();
+        JSONArray evaluate = JSONArray.fromObject(params.get("evaluate"));
+        List<String> sids = Arrays.asList(((String) params.get("sid")).split(","));
+        List<Evaluate> evaluates = new ArrayList<>();
+        for(int i = 0; i < evaluate.size(); i++) {
+            JSONObject j = evaluate.getJSONObject(i);
+            String content = j.getString("content");
+            Integer score = j.getInt("score");
+            Evaluate e = new Evaluate(content, score);
+            e.setCid(params.get("cid"));
+            e.setTid(params.get("tid"));
+            evaluates.add(e);
+        }
+        for(Evaluate e: evaluates) {
+            for(String sid: sids) {
+                e.setSid(sid);
+                e.setEid();
+                teacherService.addEvaluateToDB(e);
+            }
+        }
+        map.put("evaluate", evaluates);
+        return map;
+    }
+
+    private String trims(String str) {
+        StringBuffer s = new StringBuffer();
+        byte[] b = str.getBytes(StandardCharsets.UTF_8);
+        for(byte ch: b) {
+            if(ch == '/' || ch == '"') {
+                continue;
+            }
+            s.append(ch);
+        }
+        return s.toString();
     }
 
 }

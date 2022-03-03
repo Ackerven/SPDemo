@@ -56,4 +56,8 @@ public class TeacherService {
     public Student queryStudentForEvaluate(String sid) {
         return teacherMapper.queryStudentForEvaluate(sid);
     }
+
+    public void addEvaluateToDB(Evaluate e) {
+        teacherMapper.putEvaluate(e.getEid(), e.getContent(), e.getScore(), e.getTid(), e.getSid(), e.getCid());
+    }
 }

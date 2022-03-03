@@ -26,6 +26,12 @@ public class Evaluate {
     public Evaluate() {
     }
 
+    public Evaluate(String content, Integer score) {
+        this.content = content;
+        this.score = score;
+        setEid();
+    }
+
     public Evaluate(String content, Integer score, String sid, String tid, String cid) {
         this.content = content;
         this.score = score;
@@ -39,7 +45,19 @@ public class Evaluate {
         this.id = id;
     }
 
-    private void setEid() {
+    public void setEid() {
         this.eid = Tools.randomString(30);
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }
