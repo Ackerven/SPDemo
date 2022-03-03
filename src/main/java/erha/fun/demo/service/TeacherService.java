@@ -1,10 +1,13 @@
 package erha.fun.demo.service;
 
 import erha.fun.demo.Mapper.TeacherMapper;
+import erha.fun.demo.bean.Classes;
+import erha.fun.demo.bean.Student;
 import erha.fun.demo.bean.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -28,5 +31,13 @@ public class TeacherService {
 
     public Teacher queryTeacherByName(String name) {
         return teacherMapper.queryTeacherByName(name.toLowerCase(Locale.ROOT));
+    }
+
+    public List<Classes> queryClassOfTeacher(String tid) {
+        return teacherMapper.queryClassOfTeacher(tid);
+    }
+
+    public List<Student> queryStudentForClass(String cid) {
+        return teacherMapper.queryStudentForClass(cid);
     }
 }
