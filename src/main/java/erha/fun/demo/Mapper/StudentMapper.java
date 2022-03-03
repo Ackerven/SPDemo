@@ -29,8 +29,8 @@ public interface StudentMapper {
     @Select("select * from classes where cid in (select cid from sc_relation where sid = #{sid})")
     List<Classes> queryClassOfStudent(String sid);
 
-    @Select("select * from teacher where tid = (select tid from tc_relation where cid = #{cid})")
-    Teacher queryTeacherForClass(String cid);
+    @Select("select * from teacher where tid in (select tid from tc_relation where cid = #{cid})")
+    List<Teacher> queryTeacherForClass(String cid);
 
     @Select("select * from classes where cid = #{cid}")
     Classes queryClass(String cid);

@@ -50,9 +50,11 @@ public class StudentController {
         Student student = studentService.queryStudentByUserName(username);
         List<Classes> list = studentService.queryClassOfStudent(student.getSid());
         for(Classes c: list) {
-            Teacher t = studentService.queryTeacherForClass(c.getCid());
-            t.setPassword("");
-            c.setTeacher(t);
+            List<Teacher> tlist = studentService.queryTeacherForClass(c.getCid());
+            for(Teacher t: tlist) {
+                t.setPassword("");
+            }
+            c.setTeacher(tlist);
         }
         return list;
     }
@@ -62,9 +64,11 @@ public class StudentController {
                            @PathVariable("cid") String cid) {
         Map<String, Object> map = new HashMap<>();
         Classes classes = studentService.queryClasses(cid);
-        Teacher t = studentService.queryTeacherForClass(classes.getCid());
-        t.setPassword("");
-        classes.setTeacher(t);
+        List<Teacher> list = studentService.queryTeacherForClass(classes.getCid());
+        for(Teacher t: list) {
+            t.setPassword("");
+        }
+        classes.setTeacher(list);
         Student student = studentService.queryStudentByUserName(username);
         map.put("score", studentService.queryScoreForStudent(student.getSid(), classes.getCid()));
         map.put("class", classes);

@@ -17,24 +17,19 @@ public class Classes {
     private String grade;
     private String name;
     private String cid;
+    private String subject;
     private List<Student> students;
-    private Teacher teacher;
+    private List<Teacher> teacher;
 
     public Classes() {
     }
 
-    public Classes(String grade, String name) {
+    public Classes(String grade, String name, String subject) {
         this.grade = grade;
         this.name = name;
         this.students = new ArrayList<>();
-        this.setCid();
-    }
-
-    public Classes(String grade, String name, Teacher teacher) {
-        this.grade = grade;
-        this.name = name;
-        this.students = new ArrayList<>();
-        this.teacher = teacher;
+        this.subject = subject;
+        this.teacher = new ArrayList<>();
         this.setCid();
     }
 
@@ -70,11 +65,19 @@ public class Classes {
         this.students = students;
     }
 
-    public Teacher getTeacher() {
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public List<Teacher> getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public void setTeacher(List<Teacher> teacher) {
         this.teacher = teacher;
     }
 

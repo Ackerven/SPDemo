@@ -62,7 +62,7 @@ public class StudentService {
      * @param cid 班级 id
      * @return Teacher
      */
-    public Teacher queryTeacherForClass(String cid) {
+    public List<Teacher> queryTeacherForClass(String cid) {
         return studentMapper.queryTeacherForClass(cid);
     }
 
