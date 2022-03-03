@@ -26,8 +26,8 @@ public class StudentService {
      * @param id 学生 ID
      * @return Student
      */
-    public Student queryStudentById(Long id) {
-        return studentMapper.queryStudentById(id);
+    public Student queryStudentById(String id) {
+        return studentMapper.queryStudentById(Long.getLong(id));
     }
 
     /**

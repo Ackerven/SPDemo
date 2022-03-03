@@ -34,13 +34,13 @@ public class StudentController {
 
     /**
      * 获取学生基本信息
-     * @param username
+     * @param value
      * @return
      */
-    @GetMapping("/student/{username}")
-    public Student space(@PathVariable("username") String username) {
-        Student student = studentService.queryStudentByUserName(username);
-        student.setClassList(this.classList(username));
+    @GetMapping("/student/{value}")
+    public Student space(@PathVariable("value") String value) {
+        Student student = studentService.queryStudentByUserName(value);
+        student.setClassList(this.classList(value));
         student.setPassword("");
         return student;
     }
